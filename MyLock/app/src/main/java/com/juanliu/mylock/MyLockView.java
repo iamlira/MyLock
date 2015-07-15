@@ -17,7 +17,7 @@ import android.view.SurfaceView;
  */
 public class MyLockView extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder holder;
-    private boolean draw = false;
+    private boolean draw=false;
     private int width, height, stick_x, stick_y;
     private Paint_Thread paint_thread;
     private Point[][] list = new Point[3][3];
@@ -138,11 +138,11 @@ public class MyLockView extends SurfaceView implements SurfaceHolder.Callback {
     public void validate(int x, int y) {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 3; j++) {
-                if (x <= list[i][j].x + 40 && x >= list[i][j].x - 40 && y <= list[i][j].y + 40 && y >= list[i][j].y + 40) {
-                    Log.d("ff",list[i][j].x+"  "+list[i][j].y);
+                if (x <= list[i][j].x + 40 && x >= list[i][j].x - 40 && y <= list[i][j].y + 40 && y >= list[i][j].y - 40) {
                     stick_x = list[i][j].x;
                     stick_y = list[i][j].y;
                     draw = true;
+                    return ;
                 }
 
             }
@@ -153,15 +153,15 @@ public class MyLockView extends SurfaceView implements SurfaceHolder.Callback {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 validate((int) event.getX(), (int) event.getY());
-                Log.d("look",(int) event.getX()+"  "+ (int) event.getY()+"  " +draw);
                 break;
             case MotionEvent.ACTION_MOVE:
+                validate((int) event.getX(), (int) event.getY());
                 if(draw)
                 move_draw(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
-//                clear();
-//                draw = false;
+                clear();
+                draw = false;
                 break;
         }
         return true;
